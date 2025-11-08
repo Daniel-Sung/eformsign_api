@@ -1,0 +1,4 @@
+curl
+-X GET
+-H "Content-Type: application/json"
+'htt://anycar.ap-northeast-2.elasticbeanstalk.com/api/api_auth/access_token?memberId=john.kim@forcs.com'

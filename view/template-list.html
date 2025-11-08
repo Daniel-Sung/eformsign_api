@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>template List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+<script src="/js/service.js"></script>
+<script src="/js/resource.js"></script>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body>
+  <nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image"><img src="/image/apidemo_symbol.png" style="height:28px; width: 28px" alt=""></span>
+        <div class="text logo-text">
+          <span class="name" data-text="COMPANY"></span>
+          <span class="profession"data-text="SYSNAME"></span>
+        </div>
+      </div>
+      <i class='fa-solid fa-chevron-right toggle'></i>
+    </header>
+    <div class="menu-bar">
+      <div class="menu">
+        <ul class="menu-links">
+          <li class="nav-link"><a href="template-list.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT" title="Create Document"></span></a></li>
+		  <li class="nav-link"><a href="single-document.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT_SINGLEDATA" title="Create Document(View Data)"></span></a></li>
+          <li class="nav-link"><a href="document-list.html"><i class="fa-solid fa-folder-open fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="DOCUMENT_BOX"></span></a></li>
+          <li class="nav-link"><a href="template-mngt.html"><i class="fa-solid fa-file fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="TEMPLATE_MNGT"></span></a></li>
+          <li class="nav-link"><a href="member-mngt.html"><i class="fa-solid fa-user-plus fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="MEMBER_MNGT"></span></a></li>
+          <li class="nav-link"><a href="group-mngt.html"><i class="fa-solid fa-user-group fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="GROUP_MNGT"></span></a></li>
+        </ul>
+      </div>
+      <div class="bottom-content">
+        <li class="">
+          <a href="/index.html"><i class="fa-solid fa-right-from-bracket fa-1x fa-rotate-180" style="color:#5DADE2; padding: 0 10px 0 15px;"></i><span class="text nav-text" data-text="LOGOUT"></span></a>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <section class="home">
+    <div class="topbar">
+      <i class="fa-solid fa-file-signature fa-1x" style="color:black"></i>&nbsp;
+      <span data-text="CREATE_DOCUMENT"></span>
+      <button id="refresh" onClick="reqRefreshToken();" class="myBtn" style="float: right; margin: -5px 0 0 0; font-size: 12px; height:fit-content">Refresh Token</button>
+      <span id="member" class="member"></span>
+    </div>
+    <p id="message" class="message"></p>
+    <div class="content">
+      <div class="row" style="width: 98%; display: inline-block; position: absolute; top: 45px">
+        <span class="template-name" data-text="TEMPLATES" style="font-size: 16px;"></span>&emsp;&emsp;
+        <input type="text" id="categoryStr" data-holder="CATEGORY" placeholder="" value="" onfocus="this.value=''" style="border: 1px solid #ccc; text-align: center; padding:5px; width:150px;height:30px; font-size:14px;"/>
+        <button id="btnSearchCategory" class="myBtn" onclick="localStorage.removeItem('templateId');" style="background-color:#D6DBDF; color:black" data-text="FIND"></button>&emsp;
+        <input type="text" id="templateStr" data-holder="TEMPLATE_NAME" placeholder="" value="" onfocus="this.value=''" style="border: 1px solid #ccc; text-align: center; padding:5px; width:150px;height:30px; font-size:14px;"/>
+        <button id="btnSearchTemplate" class="myBtn" onclick="localStorage.removeItem('templateId');" style="background-color:#D6DBDF; color:black" data-text="FIND"></button>&emsp;
+        <input type="text" id="descStr" data-holder="SVC_TEMPLATE_LIST_DESC" placeholder="" value="" onfocus="this.value=''" style="border: 1px solid #ccc; text-align: center; padding:5px; width:150px;height:30px; font-size:14px;"/>
+        <button id="btnSearchDesc" class="myBtn" onclick="localStorage.removeItem('templateId');" style="background-color:#D6DBDF; color: black" data-text="FIND"></button>
+        <div style="float: right;">
+          <button id="myfile" class="myBtn" onclick="setChoice('myfile');" style="background-color: #04AA6D;" data-text="FROM_MY_FILE"></button>
+          <button id="template" class="myBtn" onclick="setChoice('template');" style="background-color: #04AA6D" data-text="FROM_TEMPLATE"></button>
+          <button id="down" class="myBtn" onclick="setChoice('list');" style="background-color: #008ae6" data-text="BULK_DOCUMENTS"></button>
+          <!--
+          <button id="docinfo" class="myBtn" onclick="setChoice('docinfo');" style="background-color: #008ae6" data-text="VIEW_COMPLETE"></button>
+          -->
+        </div>
+      </div>
+      <div style="float:left; position: absolute; top: 90px; width:98%">
+        <table id="grid"></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const query = window.location.search;
+if (query) {
+  const param = new URLSearchParams(query);
+  localStorage.setItem('memberId', param.get('memberId'));
+  localStorage.setItem('country_code', 'jp');
+}
+document.getElementById("member").innerHTML = localStorage.memberId;
+
+document.getElementById("message").innerHTML = resource[localStorage.lang].SVC_TEMPLATE_LIST_INITIALIZING;
+getTemplateList().then((res) => {
+  if (res) {
+    document.getElementById("btnSearch").click();
+  } 
+})
+
+function setChoice(mode) {
+  const tid = localStorage.templateId;
+
+  localStorage.removeItem('recipientData');
+  localStorage.removeItem('recipientName');
+
+  if (mode == "myfile") {
+      createDocumentMyfile();
+  } 
+  else {
+    if (tid == undefined) {
+      alert(resource[localStorage.lang].SELECT_TEMPLATE);
+    } else {
+      switch (tid) {
+          case 'ece6a1426f5c4c44b9fc267490430035': // 展示場契約書_DB連動		  
+            localStorage.setItem("recipientList", "customer.list");
+            break;
+          case 'de5b518f14f546ac8cae93f9780e4fb6': // 給料明細書_DB連動
+            localStorage.setItem("recipientList", "employee.list");
+            break;
+          case 'f43a40a7b6a94640bd365a097e775ea1':
+            localStorage.setItem("recipientList", "PO.list");
+            break;
+          case '9c8100ce70d74aeeb75ae06b0dc64dfb': // 雇用契約書
+            localStorage.setItem("recipientList", "pca_recipient.list");
+            break;
+          case '78da81ebff444daaaa27e0c00f81cd30':
+            localStorage.setItem("recipientList", "david4260.list");
+            break;
+		  case '9d11b5e91a454899b55c35ab9b0b8d17':
+			localStorage.setItem("recipientList", "payroll.list");
+			break;
+          default: // 給料明細書_Excel
+            localStorage.setItem("recipientList", "recipient.list");
+            break;
+      }
+      if (mode == 'list') {
+        switch (tid) {
+          case '80a68fad6d1b44bfa3aa4269a165cfcf':
+          case 'bb733b11a21b482f813489acf92bdde4':
+            alert("Not available for data prefill and bulk send.")
+            break;
+          default: 
+            getRecipientList();
+            break;
+        }
+      } else {
+        createDocument();
+      }
+    }
+  }
+}
+
+const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+toggle.addEventListener("click", () => { sidebar.classList.toggle("close"); })
+
+setLang();
+
+</script>
+</body>
+</html>
+ 

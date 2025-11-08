@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>template List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="/js/service.js"></script>
+<script src="/js/resource.js"></script>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body>
+  <nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image"><img src="/image/apidemo_symbol.png" style="height:28px; width: 28px" alt=""></span>
+        <div class="text logo-text">
+          <span class="name" data-text="COMPANY"></span>
+          <span class="profession"data-text="SYSNAME"></span>
+          </div>
+        </div>
+        <i class='fa-solid fa-chevron-right toggle'></i>
+      </header>
+      <div class="menu-bar">
+        <div class="menu">
+          <ul class="menu-links">
+            <li class="nav-link"><a href="template-list.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="CREATE_DOCUMENT"></span></a></li>
+			  <li class="nav-link"><a href="single-document.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT_SINGLEDATA" title="Create Document(View Data)"></span></a></li>
+            <li class="nav-link"><a href="document-list.html"><i class="fa-solid fa-folder-open fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="DOCUMENT_BOX"></span></a></li>
+            <li class="nav-link"><a href="template-mngt.html"><i class="fa-solid fa-file fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="TEMPLATE_MNGT"></span></a></li>
+            <li class="nav-link"><a href="member-mngt.html"><i class="fa-solid fa-user-plus fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="MEMBER_MNGT"></span></a></li>
+            <li class="nav-link"><a href="group-mngt.html"><i class="fa-solid fa-user-group fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="GROUP_MNGT"></span></a></li>
+        </ul>
+      </div>
+      <div class="bottom-content">
+        <li class="">
+          <a href="/index.html"><i class="fa-solid fa-right-from-bracket fa-1x fa-rotate-180" style="color:#5DADE2; padding: 0 10px 0 15px;"></i><span class="text nav-text" data-text="LOGOUT"></span></a>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <section class="home">
+    <div class="topbar">
+      <i class="fa-solid fa-folder-open fa-1x" style="color:black"></i>&nbsp;
+      <span data-text="DOCUMENT_BOX"></span>
+      <button id="refreshesh" onClick="reqRefreshToken();" class="myBtn" style="float: right; margin: -5px 0 0 0; font-size: 12px; height:fit-content">Refresh Token</button>
+      <span id="member" class="member"></span>
+    </div>
+    <p id="message" class="message"></p>
+    <div class="content">
+      <div class="row" style="width: 98%; display: inline-block; position: absolute; top: 45px">
+            <select id="box" class="custom-select" style="width:150px;" onchange="getDocBox()" >
+              <option class="select-items" value="01" data-text="IN_PROGRESS"> &emsp;</option>
+              <option class="select-items" value="02" data-text="ACTION_REQUIRED"> &emsp;</option>
+              <option class="select-items" value="03" selected data-text="COMPLETED"> &emsp;</option>
+              <option class="select-items" value="04" data-text="DOCUMENT_MNGT"> &emsp;</option>
+            </select>&emsp;
+            <input type="text" id="keyword" name="keyword" value="" onfocus="this.value=''" style="border: 1px solid #ccc; text-align: center; padding:8px; width:160px;height:30px; font-size:14px; font-weight: bold;"/>
+            <button id="search" class="myBtn" onclick="search();" style="background-color: #008ae6" data-text="FIND" ></button>
+            <button type="button" id="btnRemove" class="myBtn" style="display: none;"></button>
+            <div style="float: right;">
+            <span style="margin-left:10px;" data-text="SELECTED_DOCUMENT"></span>&nbsp;
+            <button id="view" class="myBtn" onclick="view();" style="background-color: #04AA6D" data-text="VIEW"></button>
+            <button id="info" class="myBtn" onclick="info();" style="background-color: #008ae6" data-text="INFO"></button>
+            <button id="send" class="myBtn" onclick="send();" style="background-color: #008ae6" data-text="PROCESS"></button>
+            <button id="down" class="myBtn" onclick="down();" style="background-color: #008ae6" data-text="DOWNLOAD"></button>
+            <button id="attach" class="myBtn" onclick="attachments();" style="background-color: #008ae6" data-text="ATTACHMENTS"></button>
+            <button id="cancel" class="myBtn" onclick="cancel();" style="background-color: #008ae6" data-text="CANCEL"></button>
+            <button id="ddelete" class="myBtn" onclick="ddelete();" style="background-color: #008ae6" data-text="DELETE"></button>
+            <button id="refresh" class="myBtn" onclick="refresh();" style="background-color: #85929E" ><i class="fa-solid fa-arrows-rotate" style="padding: 4px 0 2px 0;"></i></button>
+        </div>
+      </div>
+      <div style="float:left; position: absolute; top: 90px; width:98%">
+        <table id="grid"></table>
+      </div>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Document Details</h4>
+          </div>
+          <div class="modal-body">
+            <p id="history"></p>
+          </div>
+        </div>
+      </div>
+  </section>
+</body>
+<script type="text/javascript">
+// 01: 진행중, 02: 처리할文書箱, 03:완료文書箱, 04: 문서관리
+localStorage.setItem("docBoxId","03");
+document.getElementById("send").style.display= 'none';
+document.getElementById("cancel").style.display= 'none'; 
+document.getElementById("ddelete").style.display= 'none';
+document.getElementById("refresh").style.display= 'none';
+
+reqGetDocumentList(localStorage.docBoxId,"","");
+document.getElementById("member").innerHTML = localStorage.memberId;
+
+function getDocBox(){
+  const box = document.getElementById("box");
+  const boxId = box.options[box.selectedIndex].value;
+  localStorage.docBoxId = boxId;
+  document.getElementById("btnRemove").click();
+  reqGetDocumentList(boxId,null,null);
+
+  switch (boxId) {
+    case '01':
+          document.getElementById("down").style.display= 'none'; 
+          document.getElementById("attach").style.display= 'none'; 
+          document.getElementById("send").style.display= 'none';
+          document.getElementById("cancel").style.display= 'inline-block'; 
+          document.getElementById("ddelete").style.display= 'none';
+          document.getElementById("refresh").style.display= 'none';
+          break;
+    case '02':
+          document.getElementById("down").style.display= 'none'; 
+          document.getElementById("attach").style.display= 'none'; 
+          document.getElementById("down").style.display= 'none'; 
+          document.getElementById("send").style.display= 'inline-block'; 
+          document.getElementById("cancel").style.display= 'none'; 
+          document.getElementById("ddelete").style.display= 'none';
+          document.getElementById("refresh").style.display= 'none';
+          break;
+    case '03':
+          document.getElementById("down").style.display= 'inline-block'; 
+          document.getElementById("attach").style.display= 'inline-block'; 
+          document.getElementById("send").style.display= 'none';
+          document.getElementById("cancel").style.display= 'none'; 
+          document.getElementById("ddelete").style.display= 'none';
+          document.getElementById("refresh").style.display= 'none';
+          break;
+    case '04':
+          document.getElementById("down").style.display= 'inline-block'; 
+          document.getElementById("attach").style.display= 'inline-block'; 
+          document.getElementById("send").style.display= 'none';
+          document.getElementById("cancel").style.display= 'inline-block'; 
+          document.getElementById("ddelete").style.display= 'inline-block'; 
+          document.getElementById("refresh").style.display= 'inline-block'; 
+          break;
+  }
+}
+
+function search(){
+  localStorage.ddeleteItem("documentId");
+  document.getElementById("btnRemove").click();
+  console.log(localStorage.docBoxId+",null,"+document.getElementById("keyword").value);
+  reqGetDocumentList(localStorage.docBoxId,null,document.getElementById("keyword").value);
+}
+
+function view(){
+  previewDocument();
+}
+
+function info(){
+  reqDocumentInfo();
+  modal.style.display = "block";
+}
+
+function send(){
+  createDocument();
+}
+
+function down(){
+  reqDownloadDocument();
+}
+
+function attachments(){
+  reqDownloadAttachments("false");
+}
+
+function cancel(){
+  reqCancelDocument(localStorage.documentId);
+}
+
+function ddelete(){
+  reqDeleteDocument();
+}
+
+function refresh(){
+  document.getElementById("btnRemove").click();
+  //setTimeout(() => reqreqGetDocumentList(localStorage.docBoxId,null,document.getElementById("keyword").value), 2000);
+  reqGetDocumentList(localStorage.docBoxId,null,document.getElementById("keyword").value);
+}
+
+const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+
+setLang();
+
+var modal = document.getElementById("myModal");
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+</script>
+</body>
+</html>
+

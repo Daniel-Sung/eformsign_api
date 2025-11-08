@@ -1,0 +1,89 @@
+<!DOCTYPE html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Create document</title>
+<script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+<script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+
+<script type="text/javascript">
+const query = window.location.search;
+const param = new URLSearchParams(query);
+const name = param.get('name');
+const rno = param.get('rno');
+
+let document_option = {
+    "company": {
+		"id": "a9c2c0fff3004a7e944f5c4b8f7d83d4"  
+    },
+    "user" : {
+        "type" : "02" ,
+        "external_user_info" : {
+            "name" :  name       // 외부자 처리 시 외부자 이름 입력
+        }
+    },
+    "mode": {
+        "type": "01",      // 모드 (01: 새 문서 작성, 02: 문서 처리, 03: 문서 미리보기)
+		"template_id": "56d773fb6461490dad716f467564417e"
+    },
+    "layout": {
+        "lang_code": "ko",
+        "header" : true, 
+        "footer" : false 
+    }, 
+    "prefill": {
+        "document_name": "E-스포츠대회참가신청서(익명)_"+ name,
+        "fields": [
+            {"id":"신청인","value":name},
+            {"id":"구분", "value": "선수"},
+            {"id":"선수등록번호", "value":rno}
+        ]
+    },
+    "return_fields" : []
+};
+
+const eformsign = new EformSignDocument();
+
+$(document).ready(function () {
+
+    const sucess_callback = function (response) {
+        if ("-1" == response.code) {
+            console.log(response);
+            alert("신청이 완료되었습니다.");
+        } else {
+            alert(response.code + ":\n" + response.message);
+        }
+        window.close();
+    };
+
+    const error_callback = function (response) {
+        alert("오류 발생: "+ response.code + "\n" + response.message);
+        console.log(response);
+        window.close();
+    };
+
+    action_callback = function (response) {
+        $('#buttonList').find('button').css('display','none');
+        $(response.data).each(function(idx, action){
+            $('#buttonList').find('button').each(function(idx, btn){
+            if ($(btn).attr('id').replace('btn_','') === action.code){
+                if (action.code === '99') return;
+                $(btn).attr('title',action.name).text(action.name);
+                $(btn).css('display', 'inline-block');
+            }
+            });
+        });
+        console.table(response.data);
+    };
+
+    eformsign.document(document_option, "eformsign_iframe", sucess_callback, error_callback, action_callback);
+    eformsign.open();
+});
+
+</script>
+</head>
+<body style="background-color: #EBEDEF; padding: 0">
+    <iframe id="eformsign_iframe" name="eformsign_iframe" frameborder="0" style="width:99vw; height: 98vh"></iframe>
+</body>
+</html>

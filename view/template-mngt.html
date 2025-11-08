@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>template List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="/js/service.js"></script>
+<script src="/js/resource.js"></script>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body>
+  <nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image"><img src="/image/apidemo_symbol.png" style="height:28px; width: 28px" alt=""></span>
+        <div class="text logo-text">
+          <span class="name" data-text="COMPANY"></span>
+          <span class="profession"data-text="SYSNAME"></span>
+        </div>
+      </div>
+      <i class='fa-solid fa-chevron-right toggle'></i>
+    </header>
+    <div class="menu-bar">
+      <div class="menu">
+        <ul class="menu-links">
+          <li class="nav-link"><a href="template-list.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT"></span></a></li>
+			<li class="nav-link"><a href="single-document.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT_SINGLEDATA" title="Create Document(View Data)"></span></a></li>
+          <li class="nav-link"><a href="document-list.html"><i class="fa-solid fa-folder-open fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="DOCUMENT_BOX"></span></a></li>
+          <li class="nav-link"><a href="template-mngt.html"><i class="fa-solid fa-file fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="TEMPLATE_MNGT"></span></a></li>
+          <li class="nav-link"><a href="member-mngt.html"><i class="fa-solid fa-user-plus fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="MEMBER_MNGT"></span></a></li>
+          <li class="nav-link"><a href="group-mngt.html"><i class="fa-solid fa-user-group fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="GROUP_MNGT"></span></a></li>
+        </ul>
+      </div>
+      <div class="bottom-content">
+        <li class="">
+          <a href="/index.html"><i class="fa-solid fa-right-from-bracket fa-1x fa-rotate-180" style="color:#5DADE2; padding: 0 10px 0 15px;"></i><span class="text nav-text" data-text="LOGOUT"></span></a>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <section class="home">
+    <div class="topbar">
+      <i class="fa-solid fa-file fa-1x" style="color:black"></i>&nbsp;
+      <span data-text="TEMPLATE_MNGT"></span>
+      <button id="refresh" onClick="reqRefreshToken();" class="myBtn" style="float: right; margin: -5px 0 0 0; font-size: 12px; height:fit-content">Refresh Token</button>
+      <span id="member" class="member"></span>
+    </div>
+    <p id="message" class="message"></p>
+    <div class="content">
+      <div class="row" style="width: 98%; display: inline-block; position: absolute; top: 45px">
+        <input type="text" id="categoryStr" data-holder="CATEGORY" value="" onfocus="this.value=''" style="border: 1px solid #ccc; text-align: center; padding:5px; width:180px;height:30px; font-size:14px; font-weight: bold;"/>
+        <button id="btnSearchCategory" class="myBtn" onclick="localStorage.removeItem('templateId');" style="background-color:#85929E" data-text="FIND"></button>
+        <div style="float: right;">
+          <button id="edit" class="myBtn" onclick="setChoice('edit');" style="background-color: #04AA6D" data-text="EDIT"></button>
+          <button id="new" class="myBtn" onclick="setChoice('new');" style="background-color: #04AA6D" data-text="NEW"></button>
+        </div>
+      </div>
+      <div style="float:left; position: absolute; top: 90px; width:98%">
+        <table id="grid"></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.getElementById("member").innerHTML = localStorage.memberId;
+
+getTemplateList();
+localStorage.removeItem("templateId");
+
+function setChoice(id) {
+    switch (id) {
+      case 'edit':
+        if(localStorage.getItem("templateId") == null) {
+          alert(resource[localStorage.lang].SELECT_TEMPLATE);
+        } else {
+          editTemplate();
+        }
+        break;
+      case 'new':
+        createTemplate();
+        break;
+      default: break;
+    }
+}
+
+const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+
+setLang();
+</script>
+</body>
+</html>
+ 

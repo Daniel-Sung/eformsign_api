@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Create document from myfile</title>
+  <link href="/view/style.css" rel="stylesheet" type="text/css" />
+  <script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+  <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+  <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>
+  <script src="/js/resource.js"></script>
+  <script type="text/javascript">
+    const pdfdata = "";
+    var action_buttons = [];
+    var eformsign, templateId, templateFile, actionType;
+
+    $(document).ready(function () {
+      eformsign = new EformSignTemplate();
+      
+      var template_option_myfile = {
+        "company": {
+          "id": localStorage.company_id,
+          "country_code": localStorage.country_code
+          // "user_key": 
+        },
+        "user": {
+          "id": localStorage.memberId,
+          "access_token" : localStorage.access_token, 
+          "refresh_token" : "" // localStorage.refresh_token
+        },
+        "mode": {
+          "type": "01", // 01 : 생성 , 02 : 수정, 03 : 복제		  
+		  "template_id": "",
+          "template_type" : "unstructured_form"
+        },
+        "layout" : {
+          "lang_code" : localStorage.lang,
+          "header" : false,
+          "footer" : false
+        },
+        "prefill": {
+          "template_name": "Dummy",
+          "fields": [
+          ],
+          "step_settings": [
+          ],
+        }
+      };
+
+      var sucess_callback = function (response) {
+        console.table(response);
+        if (response.type ==='document'){
+          console.log("document="+response.document_id);
+          console.log(response.title);
+          console.table(response.values);
+          console.table(response.receipients);
+          if ("-1" == response.code) {
+            alert(resource[localStorage.lang].HTML_DOCUMENT_SENT);
+            alert("文書作成成功\n" + "- document_id : " + response.document_id + "\n- title : " + response.title);
+            documentId = response.document_id;
+          } else {
+            alert("문서 작성 에러\n" + "- cdoe : " + response.code + "\n- message : " + response.message);
+          }
+		      //$('#eformsign_iframe').attr('src', '');
+			  window.close();
+        } else if (response.type ==='template'){
+          console.log("template="+response.template_id);
+          console.log(response.template_name);
+          console.table(response.step_settings);
+        }
+        
+      };
+
+      var error_callback = function (response) {
+        if (response.type ==='document'){
+          alert("문서 작성 에러\n" + "- cdoe : " + response.code + "\n- message : " + response.message);
+          console.log(response.code);
+          console.log(response.message);
+          window.close();
+          $('#eformsign_iframe').attr('src', '');
+        }else {
+          alert("템플릿 생성 에러\n" + "- cdoe : " + response.code + "\n- message : " + response.message);
+          console.log(response.code);
+          console.log(response.message);
+          window.close();
+          $('#eformsign_iframe').attr('src', '');
+        }
+      };
+
+      var action_callback = function (response) {
+        console.table(response);
+        if (response.type ==='document'){
+          actionType = '03';
+        }else   if (response.type ==='template'){
+          actionType = '02';
+        }
+        $('#buttonList').find('button').css('display','none');
+        $(response.data).each(function(idx, action){
+            $('#buttonList').find('button').each(function(idx, btn){
+              console.log('###'+action.code+'===='+action.name);
+              if ($(btn).attr('id').replace('btn_','') === action.code){
+                 console.log('###'+action.code+'===='+action.name);
+                 if(action.code === '06'){
+                   $(btn).attr('title','다음').text('다음');
+                 }else if(action.code === '20'){
+                   $(btn).attr('title','완료').text('완료');
+                 }else{
+                  $(btn).attr('title',action.name).text(action.name);
+                 }
+                 $(btn).attr("title", action.name).text(action.name.replace('하기',''));
+                $(btn).css('display', 'inline-block');
+                if(action.code === '99'){
+                  $(btn).css('display', 'none');
+                }
+              }
+            });
+        });
+        console.log(response.data);
+      };
+
+      //eformsign.setDomain('https://www.eformsign.com');
+		console.log(template_option_myfile);
+      eformsign.template( template_option_myfile, "eformsign_iframe", sucess_callback, error_callback, action_callback ,action_buttons );
+      eformsign.open();
+      setLang();
+    });
+
+    function action(action) {
+      var action = {
+        type : actionType,
+        code : action
+      }
+      eformsign.sendAction(action);
+    }
+
+  </script>
+</head>
+<body style="background-color: #EBEDEF;">
+  <div style="width:98vw; padding:4px 0 0 15px">
+    <img src="/image/apidemo_symbol.png" alt="logo" height="24px" style="padding-top:5px;"> &emsp;
+    <span data-text="CREATE_DOCUMENT"></span>&nbsp;<i class="fa-solid fa-angle-right"></i>
+    <span data-text="FROM_MY_FILE" class="template-name"></span>
+    <div id="buttonList" style="float:right; margin: 0 -14px 4px 0">
+      <!-- 템플릿 처리용 버튼 -->
+      <button id="btn_03" class="actionBtn" onclick="action('03');"></button>
+      <button id="btn_04" class="actionBtn" onclick="action('04');"></button>
+      <button id="btn_02" class="actionBtn" onclick="action('02');"></button>
+      <button id="btn_01" class="actionBtn" onclick="action('01');"></button>
+      <button id="btn_05" class="actionBtn" onclick="action('05');"></button>
+      <button id="btn_06" class="actionBtn" onclick="action('06');"></button>
+      <!--문서 처리 용 버튼-->
+      <button id="btn_00" class="actionBtn" onclick="action('00');"></button>
+      <button id="btn_20" class="actionBtn" onclick="action('20');"></button>
+      <button id="btn_21" class="actionBtn" onclick="action('21');"></button>
+      <button id="btn_22" class="actionBtn" onclick="action('22');"></button>
+      <button id="btn_23" class="actionBtn" onclick="action('23');"></button>
+      <button id="btn_99" class="actionBtn" onclick="action('99');"></button>
+    </div>
+    <iframe id="eformsign_iframe" name="eformsign_iframe" style="width:98vw; height: 93vh;"></iframe>
+  </div>
+</body>
+</html>
+  

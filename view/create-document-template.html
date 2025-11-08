@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embedding Viewer</title>
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+<script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+<script src="/document-option/create-embedapi.js"></script>
+<script src="/js/resource.js"></script>
+<script type="text/javascript">
+
+var eformsign;
+var documentId;
+var sucess_callback;
+var error_callback;
+var action_callback;
+
+$(document).ready(function () {
+
+  eformsign = new EformSignDocument();
+  //eformsign.setDomain('https://www.eformsign.com');
+
+  sucess_callback = function (response) {
+    console.log(response);
+    if ('-1' == response.code) {
+      alert("문서를 전송하였습니다.");
+    } else {
+      alert("sucess_callback: " + response.code + "\n" + response.message);
+    }
+    $('#close').trigger('click');
+    window.close();
+  };
+
+  error_callback = function (response) {
+    const msg = "error_callback: " + response.code + "\n" + response.message;
+    //alert(msg);
+    console.log(msg);
+    //$('#close').trigger('click');
+    //window.close();
+  }
+
+  action_callback = function (response) {
+    $('#buttonList').find('button').css('display','none');
+    $(response.data).each(function(idx, action){
+        $('#buttonList').find('button').each(function(idx, btn){
+          if ($(btn).attr('id').replace('btn_','') === action.code){
+            if (action.code === '99') return;
+            $(btn).attr('title',action.name).text(action.name);
+            $(btn).css('display', 'inline-block');
+          }
+        });
+    });
+    console.table(response.data);
+  };
+
+  eformsign.document(document_option_create_embedapi, "eformsign_iframe", sucess_callback, error_callback, action_callback);
+  eformsign.open();
+  setLang();
+  document.getElementById("templateName").innerHTML = localStorage.templateName;
+
+});
+
+function action(id) {
+  const action = {
+    type : '01',
+    code : id
+  }
+  eformsign.sendAction(action);
+}
+
+</script>
+</head>
+<body style="background-color: #EBEDEF; padding: 5px 10px 5px 10px">
+  <div>
+    <img src="/image/apidemo_symbol.png" alt="logo" height="24px" style="float:left;"> &emsp;
+    <span data-text="CREATE_DOCUMENT"></span>&nbsp;<i class="fa-solid fa-angle-right"></i>
+    <b><span id="templateName"></span></b>
+    <div id="buttonList" style="float:right; margin:0 10px 5px">
+      <button id="btn_01" class="actionBtn" onclick="action('01');"></button>
+      <button id="btn_02" class="actionBtn" onclick="action('02');"></button>
+      <button id="btn_03" class="actionBtn" onclick="action('03');"></button>
+      <button id="btn_04" class="actionBtn" onclick="action('04');"></button>
+      <button id="btn_05" class="actionBtn" onclick="action('05');"></button>
+      <button id="btn_06" class="actionBtn" onclick="action('06');"></button>
+      <button id="btn_07" class="actionBtn" onclick="action('07');"></button>
+      <button id="btn_08" class="actionBtn" onclick="action('08');"></button>
+      <button id="btn_09" class="actionBtn" onclick="action('09');"></button>
+      <button id="btn_10" class="actionBtn" onclick="action('10');"></button>
+      <button id="btn_11" class="actionBtn" onclick="action('11');"></button>
+      <button id="btn_12" class="actionBtn" onclick="action('12');"></button>
+      <button id="btn_13" class="actionBtn" onclick="action('13');"></button>
+      <button id="btn_14" class="actionBtn" onclick="action('14');"></button>
+      <button id="btn_15" class="actionBtn" onclick="action('15');"></button>
+      <button id="btn_16" class="actionBtn" onclick="action('16');"></button>
+      <button id="btn_17" class="actionBtn" onclick="action('17');"></button>
+      <button id="btn_18" class="actionBtn" onclick="action('18');"></button>
+      <button id="btn_19" class="actionBtn" onclick="action('19');"></button>
+      <button id="btn_99" class="actionBtn" onclick="action('99');"></button>
+      <button id="btn_00" class="actionBtn" onclick="action('00');"></button>
+      <button id="btn_20" class="actionBtn" onclick="action('20');"></button>
+      <button id="btn_21" class="actionBtn" onclick="action('21');"></button>
+      <button id="btn_22" class="actionBtn" onclick="action('22');"></button>
+      <button id="btn_23" class="actionBtn" onclick="action('23');"></button>
+    </div>
+  </div>
+  <iframe id="eformsign_iframe" name="eformsign_iframe" frameborder="0" style="width:98vw; height: 93vh;"></iframe>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="/js/resource.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+    </center>
+      <div class="container" style="text-align: center;"><br><br>
+       <img src="/image/katrider1.jpg" style="width:300px"><br><br>
+       <h1>2023 e-스포츠 대회</h1><br>
+       <h2>카트라이더 러쉬 플러스</h2><br>
+        <button type="button" onclick="esports(1)" class="myBtn" style="border: none; ">일반대회 참가신청</button><br>
+        <button type="button" onclick="esports(2)" class="myBtn" style="border: none; background-color: #138D75;">프로리그 참가신청</button><br>
+        <!--<button type="button" onclick="esports(3)" class="myBtn" style="border: none; background-color: #9B59B6;">초청선수 등록신청</button>-->
+      </div>
+    </center><br><br>
+</body>
+<script language="JavaScript">
+
+function esports(n) {
+    const url = (n == 1) ? "https://www.eformsign.com/?s=3L1YIi" :  (n==2) ? "http://apidemo.eformsign.io/view/esports2.html" : "http://apidemo.eformsign.io/view/esports3.html" ;
+    window.open(url);
+}
+
+</script>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Preview</title>
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+<script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+<script src="/document-option/preview.js"></script>
+<script src="/js/resource.js"></script>
+<script type="text/javascript">
+
+var eformsign;
+var document_option;
+var sucess_callback;
+var error_callback;
+var action_callback;
+
+$(document).ready(function () {
+    
+  eformsign = new EformSignDocument();
+  eformsign.setDomain('https://www.eformsign.com');
+
+  sucess_callback = function (response) {
+    console.log(response.message);
+    console.log(response.document_id);
+    console.log(response.title);
+    console.table(response.values);
+    console.table(response.recipients);
+    
+    if ("-1" == response.code) {
+      //alert("성공");
+      //$('#eformsign_iframe').remove();
+    } else if("0" == response.code) {
+      alert("로그 아웃");
+    } else {
+      alert("오류 발생");
+    }
+    $('#close').trigger('click');
+    window.close();
+  };
+
+	error_callback = function (response) {
+	  alert("error_callback: "+response.message);
+	  console.log(response.code+": "+response.message);
+	  //window.close();
+	};
+
+  action_callback = function (response) {
+      $('#buttonList').find('button').css('display','none');
+      $(response.data).each(function(idx, action){
+          $('#buttonList').find('button').each(function(idx, btn){
+            if ($(btn).attr('id').replace('btn_','') === action.code){
+              $(btn).attr('title',action.name).text(action.name);
+              $(btn).css('display', '');
+            }
+          });
+      });
+  };
+  document.getElementById("documentName").value = localStorage.documentName;
+  eformsign.document(document_option_preview, "eformsign_iframe", sucess_callback, error_callback, action_callback);
+  eformsign.open();
+
+	setLang();
+});
+
+</script>
+</head>
+<body style="background-color: #EBEDEF; padding: 5px 0 0 10px">
+  <div class="row" style="margin-top: 4px;">
+    <img src="/image/apidemo_symbol.png" alt="logo" height="22px" style="margin-right: 20px;">
+    <div style="display:inline-block; vertical-align: top; margin-top:2px; font-size: 16px; font-weight: bold; height: 30px">
+      <span data-text="VIEW"></span>&ensp; <i class="fa-solid fa-angle-right"></i>&ensp;
+    <input type="text" id="documentName" class="template-name"  style="margin-top: 0px; width: 600px;">
+  </div>
+  <iframe id="eformsign_iframe" name="eformsign_iframe" frameborder="0" style="width:99vw; height: 93vh"></iframe>
+</body>
+</html>

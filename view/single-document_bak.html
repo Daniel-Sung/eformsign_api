@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>template List</title>
+<meta name='viewport' content='width=device-width, initial-scale=1' charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<link href='./style.css' rel='stylesheet' type='text/css' />
+<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css' />
+<link href='https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css' rel='stylesheet' type='text/css' />
+<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+<script src='https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js' type='text/javascript'></script>
+<script src='https://kit.fontawesome.com/d9ef70aab0.js' crossorigin='anonymous'></script>
+<script src='document-option/create-openapi.js'></script>
+<script src='service.js'></script>
+<script src='resource.js'></script>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage('resize', '*');
+  }
+</script>
+</head>
+<body>
+  <nav class='sidebar close'>
+    <header>
+      <div class='image-text'>
+        <span class='image'>
+          <span class='image'><img src='pca-logo.png' style='height:30px; width: 30px;' alt=''></span>
+        </span>
+        <div class='text logo-text'>
+          <span class='name' data-text='COMPANY'></span>
+          <span class='profession'data-text='SYSNAME'></span>
+        </div>
+      </div>
+      <i class='fa-solid fa-chevron-right toggle'></i>
+    </header>
+    <div class='menu-bar'>
+      <div class='menu'>
+        <ul class='menu-links'>
+          <li class='nav-link'><a href='single-document.html'><i class='fa-solid fa-file-signature fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='CREATE_DOCUMENT'></span></a></li>
+          <li class='nav-link'><a href='bulk-document.html'><i class='fa-solid fa-address-book fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='BULK_DOCUMENT'></span></a></li>
+          <li class='nav-link'><a href='document-list.html'><i class='fa-solid fa-folder-open fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='DOCUMENT_BOX'></span></a></li>
+          <li class='nav-link'><a href='template-mngt.html'><i class='fa-solid fa-file fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='TEMPLATE_MNGT'></span></a></li>
+          <li class='nav-link'><a href='member-mngt.html'><i class='fa-solid fa-user-plus fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='MEMBER_MNGT'></span></a></li>
+          <li class='nav-link'><a href='group-mngt.html'><i class='fa-solid fa-user-group fa-1x' style='color:#5DADE2; padding: 0 10px 0 15px;'></i>
+            <span class='text nav-text' data-text='GROUP_MNGT'></span></a></li>
+        </ul>
+      </div>
+      <div class='bottom-content'>
+        <li class=''>
+          <a href='index.html'><i class='fa-solid fa-right-from-bracket fa-1x fa-rotate-180' style='color:#5DADE2; padding: 0 10px 0 15px;'></i><span class='text nav-text' data-text='LOGOUT'></span></a>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <section class='home'>
+    <div class='topbar'>
+      <i class='fa-solid fa-file-signature fa-1x' style='color:black'></i>&nbsp;
+      雇用契約書作成
+        <button id='refresh' onClick='reqRefreshToken();' class='myBtn' style='float: right; color: black; background-color:transparent; border: none; margin: -5px calc(1%) 0 0; font-size: 14px;'><i class='fa-solid fa-rotate-right'></i></button>
+        <input type='text' id='member' class='member'  style='float: right;'>
+      </div>
+      <input type='text' id='message' class='message'>
+    <div class='content'>
+      <br>
+      <h3>労働者情報</h3>
+      <input type='text' id='name' name='name' data-holder='RECIPIENT_NAME' class='inputBox' required style='width:155px; margin-top:15px;'>&nbsp;
+      <input type='email' id='email' name='email' data-holder='RECIPIENT_EMAIL' class='inputBox' style='width:245px;' required>&nbsp;
+      <input type='text' id='mobile' name='mobile' data-holder='RECIPIENT_MOBILE' class='inputBox' style='width:170px'>&nbsp;
+      <button class='myBtn' onClick='openDocument()' style='background-color: #04AA6D;'>契約書送信</button>
+      <div style="background-color:#f0f0f0; padding: 0 0 7px 10px; width: 687px; margin-top: 5px;">
+        <span class='image'><img src='empinfo.png'></span>
+      </div>
+      <div> 
+        <button id='myfile' class='myBtn' onclick='myFileDocument()' style='background-color: #04AA6D; margin-top:20px'>新規文書作成</button>&nbsp;
+        ファイルから契約書送信
+      </div><br>
+    </div>
+  </div>
+</body>
+<script type='text/javascript'>
+
+let query = window.location.search;
+let param = new URLSearchParams(query);
+let mid = param.get('memberId');
+if (mid !== null){
+  localStorage.setItem('memberId', mid);
+}
+reqAccessToken();
+
+document.getElementById('name').value = '田中太郎';
+document.getElementById('email').value = 'forjiro646@gmail.com';
+document.getElementById('mobile').value = '+8201074660866';
+document.getElementById('member').value = localStorage.memberId;
+
+localStorage.setItem('country_code', 'jp');
+localStorage.setItem('templateName', 'PCA_雇用契約書');
+localStorage.setItem('templateId', 'f930b3a3c7734f64a5b76211e66f5c34');
+
+const dataRoot = '../data/';
+
+function checkContact() {
+  let ret = true;
+  const name = document.getElementById('name').value;
+  if (name == '') {
+    alert("名前と連絡先を入力してください。");
+    ret = false;
+  }
+  return ret;
+}
+
+
+function showData() {
+  if (!checkContact()) return;
+  localStorage.setItem('recipientName', document.getElementById('name').value);
+  let dataSrc = dataRoot + localStorage.recipientName+'.params';
+  window.open(dataSrc, '_blank');
+}
+
+function setLocalItems() {
+  localStorage.setItem('recipientName', document.getElementById('name').value);
+  localStorage.setItem('recipientEmail', document.getElementById('email').value);
+  localStorage.setItem('recipientMobile', document.getElementById('mobile').value);
+  let dataSrc = dataRoot + localStorage.recipientName+'.params';
+  localStorage.setItem('recipientData', dataSrc);
+}
+
+function openDocument(){
+  if (!checkContact()) return;
+  setLocalItems();
+  createDocument();
+}
+
+function singleDocument(){
+  if (!checkContact()) return;
+  setLocalItems();
+  postDocuments();
+}
+
+function myFileDocument(){
+  if (!checkContact()) return;
+  //localStorage.removeItem('templateId');
+ // localStorage.removeItem('templateName');
+  setLocalItems();
+  createDocumentMyfile();
+}
+
+const body = document.querySelector('body'),
+  sidebar = body.querySelector('nav'),
+  toggle = body.querySelector('.toggle'),
+  modeSwitch = body.querySelector('.toggle-switch'),
+  modeText = body.querySelector('.mode-text');
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('close');
+  })
+
+setLang();
+
+</script>
+</body>
+</html>
+

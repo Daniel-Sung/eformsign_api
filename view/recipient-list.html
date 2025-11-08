@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>テンプレートリスト</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="/document-option/create-openapi.js"></script>
+<script src="/js/service.js"></script>
+<script src="/js/resource.js"></script>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body>
+  <nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image"><img src="/image/apidemo_symbol.png" style="height:28px; width: 28px" alt=""></span>
+        <div class="text logo-text">
+          <span class="name" data-text="COMPANY"></span>
+          <span class="profession"data-text="SYSNAME"></span>
+          </div>
+        </div>
+        <i class='fa-solid fa-chevron-right toggle'></i>
+      </header>
+      <div class="menu-bar">
+        <div class="menu">
+          <ul class="menu-links">
+            <li class="nav-link"><a href="template-list.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="CREATE_DOCUMENT"></span></a></li>
+			  <li class="nav-link"><a href="single-document.html"><i class="fa-solid fa-file-signature fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+            <span class="text nav-text" data-text="CREATE_DOCUMENT_SINGLEDATA" title="Create Document(View Data)"></span></a></li>
+            <li class="nav-link"><a href="document-list.html"><i class="fa-solid fa-folder-open fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="DOCUMENT_BOX"></span></a></li>
+            <li class="nav-link"><a href="template-mngt.html"><i class="fa-solid fa-file fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="TEMPLATE_MNGT"></span></a></li>
+            <li class="nav-link"><a href="member-mngt.html"><i class="fa-solid fa-user-plus fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="MEMBER_MNGT"></span></a></li>
+            <li class="nav-link"><a href="group-mngt.html"><i class="fa-solid fa-user-group fa-1x" style="color:#5DADE2; padding: 0 10px 0 15px;"></i>
+              <span class="text nav-text" data-text="GROUP_MNGT"></span></a></li>
+        </ul>
+      </div>
+      <div class="bottom-content">
+        <li class="">
+          <a href="/index.html"><i class="fa-solid fa-right-from-bracket fa-1x fa-rotate-180" style="color:#5DADE2; padding: 0 10px 0 15px;"></i><span class="text nav-text" data-text="LOGOUT"></span></a>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <section class="home">
+    <div class="topbar">
+      <i class="fa-solid fa-file-signature fa-1x" style="color:black"></i>
+      <span data-text="CREATE_DOCUMENT"></span> 
+      <i class='fa-solid fa-chevron-right toggle'></i> 
+      <span id="templateName" class="template-name"></span>
+      <button id="refresh" onClick="reqRefreshToken();" class="myBtn" style="float: right; margin: -5px 0 0 0; font-size: 12px; height:fit-content">Refresh Token</button>
+      <span id="member" class="member"></span>
+    </div>
+    <p id="message" class="message"></p>
+    <div class="content">
+      <div class="row" style="width: 98%; display: inline-block; position: absolute; top: 45px">
+        <span class="template-name" data-text="RECIPIENT_LIST" style="font-size: 16px;"></span>
+        <button type="button" id="list" class="myBtn" onClick="recipientList()" style="background-color:#FDEBD0; color:black; font-size: 12px; font-weight:bold">{JSON}</button>&emsp;
+        <span  data-text="RECIPIENT_TYPE" style="font-size: 14px; font-weight:bold"></span>:
+        <select id="stepType" class="custom-select" style="width:100px;" onchange="setStepType()" >
+          <option class="select-items" value="05" selected data-text="RECIPIENT_TYPE_PARTICIPANT"> &emsp;</option>
+          <option class="select-items" value="07" data-text="RECIPIENT_TYPE_VIEWER"> &emsp;</option>
+        </select>&emsp;
+        <button type="button" id="btnSelected" class="myBtn" style="background-color: #E67E22;  display:none" data-text="SELECTED"></button>
+        <button type="button" id="massDocument" class="myBtn" onClick="massDocuments()" style="float: right;" data-text="SEND_BULK"></button>
+        <button type="button" id="singleDocument" class="myBtn" onClick="singleDocument()" style="float: right;" data-text="SEND_SINGLE"></button>    
+        <button type="button" id="openDocument" class="myBtn" onClick="openDocument()" style="margin-right: 2px; background-color: #04AA6D; float: right;" data-text="SEND_EMBED"></button>
+        <button type="button" id="btnRemove" class="myBtn" style="display: none; background-color:#EB984E; float: right;">Remove</button>
+        <button type="button" id="btnClear" class="myBtn" style="display: none; margin-left:5px; background-color: #D6EAF8; color: black; float: left;" data-text="CLEAR_SELECTIONS"></button>
+      </div>
+      <div style="float:left; position: absolute; top: 90px; width:98%">
+        <table id="grid"></table>
+      </div>
+    </div>
+  </section>
+</body>
+<script type="text/javascript">
+const tid = localStorage.templateId;
+localStorage.setItem("stepType", "05");
+
+if (tid == '9b6e089377b8455bba6dcb1ab20a8230' || tid == '80a68fad6d1b44bfa3aa4269a165cfcf') {
+  localStorage.setItem("stepType", "07");
+} else {
+  localStorage.setItem("stepType", "05");
+}
+
+document.getElementById("member").innerHTML = localStorage.memberId;
+document.getElementById("templateName").innerHTML = localStorage.templateName;
+reqGetRecipientList(localStorage.recipientList);
+
+function recipientList(){
+  const url = 'http://apijr.eformsign.io/data/' + localStorage.recipientList;
+  window.open(url,'Recipient List');
+}
+
+function openDocument(){
+  document.getElementById("btnSelected").click();
+  const s = localStorage.selectedRecipients;
+  if (s.indexOf(',')>0){
+    alert("選択された受信者："+s+"\n１人の受信者を選択してください。");
+    document.getElementById("btnClear").click();
+    return;
+  }
+  setTimeout(function(){
+    prefillDocument();
+  }, 500)
+}
+
+function singleDocument(){
+  document.getElementById("btnSelected").click();
+  const s = localStorage.selectedRecipients;
+  if (s=="") {
+    alert("受信者をせんたくしてください。");
+    return;
+  }
+if (s.indexOf(',')>0){
+alert("選択された受信者："+s+"\n１人の受信者を選択してください。");
+document.getElementById("btnClear").click();
+return;
+}
+   setTimeout(function(){
+    postDocument();
+  }, 1200)
+  
+}
+
+function massDocuments() {
+  document.getElementById("btnSelected").click();
+  const s = localStorage.selectedRecipients;
+  if (s=="") {
+    alert("受信者をせんたくしてください。");
+    return;
+  }
+  if (!confirm("Selected: " + s + "\nProceed?")){
+    document.getElementById("btnClear").click();
+    return;
+  }
+  setTimeout(function(){
+    postMassDocuments();
+  }, 1200)
+}
+
+function setStepType() {
+  localStorage.setItem("stepType", document.getElementById("stepType").value);
+}
+
+const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+
+setLang();
+
+</script>
+</body>
+</html>
+

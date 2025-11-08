@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>급여명세서(Payslip)_Prefill</title>
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+<script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+<script src="/js/resource.js"></script>
+<script type="text/javascript">
+// 급여명세서(Payslip)_Prefill
+const templateId = "de5b518f14f546ac8cae93f9780e4fb6";
+
+var eformsign;
+var documentId;
+var sucess_callback;
+var error_callback;
+var action_callback;
+
+var fields = {"fields": [
+    {"id":"성명"},
+    {"id":"생년월일"},
+    {"id":"통상시급"},
+    {"id":"소정근로시간"},
+    {"id":"연장근로시간"},
+    {"id":"야간근로시간"},
+    {"id":"휴일근로시간"},
+    {"id":"주휴일수"},
+    {"id":"연차일수"},
+    {"id":"기본급"},
+    {"id":"연장근로수당"},
+    {"id":"야간근로수당"},
+    {"id":"휴일근로수당"},
+    {"id":"주휴수당"},
+    {"id":"그외수당"},
+    {"id":"상여금"},
+    {"id":"연차휴가수당"},
+    {"id":"소득세"},
+    {"id":"지방소득세"},
+    {"id":"국민연금"},
+    {"id":"건강보험"},
+    {"id":"장기요양보험"},
+    {"id":"고용보험"},
+    {"id":"기타공제"},
+    {"id":"지급액계"},
+    {"id":"공제액계"},
+    {"id":"실지급액"}
+    ]}
+
+let document_option = {
+  "company": {
+      "id": localStorage.company_id,
+      "country_code": localStorage.country_code
+  },
+  "user": {
+      "type": "01",
+      "id": localStorage.memberId,
+      "access_token" : localStorage.access_token, 
+      "refresh_token" : localStorage.refresh_token
+  },
+  "mode": {
+    "type" : "01",  // 01 : 文書作成 , 02 : 문서 처리 , 03 : 미리 보기
+    "template_id" : localStorage.templateId
+  },
+  "layout" : {
+    "lang_code" : localStorage.lang, 
+    "header" : false, 
+    "footer" : false 
+  },
+  "prefill": {
+    //"document_name": "",
+    "fields": fields,
+    "recipients": [
+      {
+        "step_type": "07",  // 00:시작, 05:참여자, 06:검토자
+        "step_idx" : "2",
+        "use_mail": true,
+        "use_sms": true,
+        "name": localStorage.recipientName,
+        "id": localStorage.recipientEmail,
+        "sms": localStorage.recipientMobile,
+        "auth": {
+          "password": "",
+          "password_hint": "",
+          "valid": {
+              "day": 7,
+              "hour": 0
+          }
+        }
+      }
+    ],
+    "comment": ""
+  },
+  "form_parameters":[{
+        "name" : "jsonDataset",
+        "value" : ""
+    }
+  ],
+};
+
+const dataPath = localStorage.recipientData;
+
+$(document).ready(function () {
+  eformsign = new EformSignDocument();
+  eformsign.setDomain('https://www.eformsign.com');
+
+  sucess_callback = function (response) {
+    if ('-1' == response.code) {
+      alert("문서를 전송하였습니다.");
+      //$('#eformsign_iframe').remove();
+    } else {
+      alert("sucess_callback: " + response.code + "\n" + response.message);
+    }
+    $('#close').trigger('click');
+    window.close();
+  };
+  error_callback = function (response) {
+    alert("error_callback: " + response.code + "\n" + response.message);
+    $('#close').trigger('click');
+    window.close();
+  };
+  action_callback = function (response) {
+    $('#buttonList').find('button').css('display','none');
+    $(response.data).each(function(idx, action){
+        $('#buttonList').find('button').each(function(idx, btn){
+          if ($(btn).attr('id').replace('btn_','') === action.code){
+            if (action.code === '99') return;
+            $(btn).attr('title',action.name).text(action.name);
+            $(btn).css('display', 'inline-block');
+          }
+        });
+    });
+    console.table(response.data);
+  };
+  setLang();
+  document.getElementById("templateName").innerHTML = localStorage.templateName;
+  if (localStorage.recipientName != undefined){
+    document.getElementById("recipient").innerHTML = 'Recipient: ' + localStorage.recipientName + '  ('+localStorage.recipientEmail + ', ' +localStorage.recipientMobile+')';
+  }
+  if (dataPath == undefined || dataPath == "" ) {
+    eformsign.document(document_option, "eformsign_iframe", sucess_callback, error_callback, action_callback);
+    eformsign.open();
+  }
+});
+
+
+if (dataPath) {
+  loadData(dataPath);
+}
+  
+function loadData(dataSrc) {
+  fetch(dataSrc)
+  .then((response) => {
+      if (response.ok) {
+          return response.text();
+      } else {
+          throw new Error(response.status);
+      }
+  })
+  .then((data) => {
+      Object.assign(document_option.prefill, JSON.parse(data));
+      eformsign.document(document_option, "eformsign_iframe", sucess_callback, error_callback, action_callback);
+      eformsign.open();
+  })
+  .catch((error) => {
+      console.log(error);
+      alert(error + "\n"+ dataSrc);
+      window.close();
+  });
+}
+
+function action(id) {
+  const action = {
+    type : '01',
+    code : id
+  }
+  eformsign.sendAction(action);
+}
+
+</script>
+</head>
+<body style="background-color: #EBEDEF; padding: 5px">
+  <div style="margin:3px 0 0 5px">
+    <img src="/image/apidemo_symbol.png" alt="logo" height="24px" style="float: left; padding-right: 20px; margin-top:-2px">
+    <span data-text="CREATE_DOCUMENT"></span> <i class="fa-solid fa-angle-right"></i>
+    <b><span id="templateName"></span></b>
+    <div id="buttonList" style="float:right; padding: 0 10px; margin:-4px 0 3px;">
+      <button id="btn_01" class="actionBtn" onclick="action('01');"></button>
+      <button id="btn_02" class="actionBtn" onclick="action('02');"></button>
+      <button id="btn_03" class="actionBtn" onclick="action('03');"></button>
+      <button id="btn_04" class="actionBtn" onclick="action('04');"></button>
+      <button id="btn_05" class="actionBtn" onclick="action('05');"></button>
+      <button id="btn_06" class="actionBtn" onclick="action('06');"></button>
+      <button id="btn_07" class="actionBtn" onclick="action('07');"></button>
+      <button id="btn_08" class="actionBtn" onclick="action('08');"></button>
+      <button id="btn_09" class="actionBtn" onclick="action('09');"></button>
+      <button id="btn_10" class="actionBtn" onclick="action('10');"></button>
+      <button id="btn_11" class="actionBtn" onclick="action('11');"></button>
+      <button id="btn_12" class="actionBtn" onclick="action('12');"></button>
+      <button id="btn_13" class="actionBtn" onclick="action('13');"></button>
+      <button id="btn_14" class="actionBtn" onclick="action('14');"></button>
+      <button id="btn_15" class="actionBtn" onclick="action('15');"></button>
+      <button id="btn_16" class="actionBtn" onclick="action('16');"></button>
+      <button id="btn_17" class="actionBtn" onclick="action('17');"></button>
+      <button id="btn_18" class="actionBtn" onclick="action('18');"></button>
+      <button id="btn_19" class="actionBtn" onclick="action('19');"></button>
+      <button id="btn_99" class="actionBtn" onclick="action('99');"></button>
+      <button id="btn_00" class="actionBtn" onclick="action('00');"></button>
+      <button id="btn_20" class="actionBtn" onclick="action('20');"></button>
+      <button id="btn_21" class="actionBtn" onclick="action('21');"></button>
+      <button id="btn_22" class="actionBtn" onclick="action('22');"></button>
+      <button id="btn_23" class="actionBtn" onclick="action('23');"></button>
+    </div>
+    <span id="recipient" style="float: right"></span>
+  </div>
+  <iframe id="eformsign_iframe" name="eformsign_iframe" frameborder="0" style="margin-left: 5px;width:98vw; height: 93vh"></iframe>
+</body>
+</html>

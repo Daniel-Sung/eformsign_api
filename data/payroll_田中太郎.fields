@@ -1,0 +1,23 @@
+﻿    {"fields": [
+    {"id":"氏名","value":"田中太郎", "enabled":true},
+    {"id":"生年月日","value":"2007-07-19", "enabled":true},
+    {"id":"通常時給","value":"1200", "enabled":true},
+    {"id":"勤務時間","value":"200", "enabled":true},
+    {"id":"延長勤務時間","value":"4", "enabled":true},
+    {"id":"残業勤務時間","value":"4", "enabled":true},
+    {"id":"休日勤務時間","value":"4", "enabled":true},
+    {"id":"休日数","value":"4", "enabled":true},
+	{"id":"残りの休日","value":"", "enabled":true},	
+    {"id":"基本給","value":"240000"},
+    {"id":"延長労働手当","value":""},
+    {"id":"残業労働手当","value":""},
+    {"id":"休日労働手当","value":""},
+    {"id":"その他手当","value":""},
+    {"id":"賞与","value":"", "enabled":true},
+    {"id":"所得税","value":"4820", "enabled":true},
+    {"id":"地方所得税","value":"482", "enabled":true},
+    {"id":"国民年金","value":"10200", "enabled":true},
+    {"id":"健康保険","value":"7700", "enabled":true},
+    {"id":"雇用保険","value":"2320", "enabled":true},
+    {"id":"その他控除","value":"", "enabled":true}
+    ]}

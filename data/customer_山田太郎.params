@@ -1,0 +1,96 @@
+﻿{
+  "fields": {
+    "COMPANY_CD": "108-81-123456",
+    "rentList": [
+      {
+        "APPLY_AREA": "4440",
+        "RENT_DT": "2022-01-14 ~ 2022-01-16",
+        "DISCOUNT_PER": "30",
+        "SCHARGE_PER": "0",
+        "RENT_TOTAL_AMT": "13,053,600",
+        "EXH_TOTAL_SUM": "13,053,600",
+        "RENT_CNT": "3",
+        "OVER_TIME": "0",
+        "INFAC_NM": "4홀",
+        "APPLY_PER": "1400",
+        "OVER_AMT": "0"
+      }
+    ],
+    "TEL_NO": "010-1234-5678",
+    "OWNER_NM": "백사장",
+    "STAFF_NM": "김대리",
+    "RENTAL_AMT": "18,648,000",
+    "salesList": [
+      {
+        "DT_PAY_EXP": "2021-11-12",
+        "SALES_TYPE_PER": "임대료의 50%",
+        "VAT": "0",
+        "PAY_GB": "계약금",
+        "SALES_TYPE_AMT": "6,526,800",
+        "REMARK": "대한은행 1234-123-123456 (예금주 : 인천관광공사)",
+        "PAY_AMT": "6,526,800"
+      },
+      {
+        "DT_PAY_EXP": "",
+        "SALES_TYPE_PER": "임대료의 0%",
+        "VAT": "0",
+        "PAY_GB": "중도금",
+        "SALES_TYPE_AMT": "0",
+        "REMARK": "대한은행 1234-123-123456 (예금주 : 인천관광공사)",
+        "PAY_AMT": "0"
+      },
+      {
+        "DT_PAY_EXP": "2022-01-08",
+        "SALES_TYPE_PER": "임대료의 50%",
+        "VAT": "1,305,360",
+        "PAY_GB": "잔금",
+        "SALES_TYPE_AMT": "6,526,800",
+        "REMARK": "대한은행 1234-123-123456 (예금주 : 인천관광공사)",
+        "PAY_AMT": "7,832,160"
+      },
+      {
+        "DT_PAY_EXP": "",
+        "SALES_TYPE_PER": "임대료의 관리비 예치금%",
+        "VAT": "0",
+        "PAY_GB": "예치금",
+        "SALES_TYPE_AMT": "4,662,000",
+        "REMARK": "대한은행 1234-123-123456 (예금주 : 인천관광공사)",
+        "PAY_AMT": "4,662,000"
+      },
+      {
+        "DT_PAY_EXP": "",
+        "SALES_TYPE_PER": "",
+        "VAT": "",
+        "PAY_GB": "99",
+        "SALES_TYPE_AMT": "",
+        "REMARK": "",
+        "PAY_AMT": "19,020,960"
+      }
+    ],
+    "LESSEE_OWNER_NM": "박대표",
+    "DEPOSIT_AMT": "4,662,000",
+    "LESSEE_ADDR": "서울시 강남구 논현로 646 포시에스빌딩",
+    "DEPOSIT_PER": "25",
+    "TOTAL_CONT_AMT": "19,020,960",
+    "POST_ADDR_ACC_HOLDER": "인천광역시 연수구 갯벌로 갯벌로 12, 16층 인천관광공사",
+    "LESSEE_NM": "(주)포시에스",
+    "totalContAmount": [
+      {
+        "PAY_GB": "전시장 임대료",
+        "TYPE_AMT": "13,053,600",
+        "VAT_AMT": "1,305,360",
+        "PAY_AMT": "14,358,960"
+      },
+      {
+        "PAY_GB": "관리비 예치금",
+        "TYPE_AMT": "4,662,000",
+        "VAT_AMT": "-",
+        "PAY_AMT": "4,662,000"
+      }
+    ],
+    "LESSEE_MNG_NM": "홍길동1",
+    "CONT_DT": "2021년 11월 12일",
+    "EVENT_NM": "디지털전환 솔루션 글로벌 전시회",
+    "PAY_AMT": "14,358,960"
+  }
+}

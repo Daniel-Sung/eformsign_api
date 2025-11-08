@@ -1,0 +1,7 @@
+﻿{"recipients": [
+{ "name": "田中太郎", "email":"forjiro646@gmail.com", "mobile":"01074660866", "from":"2023-01-11", "to":"2024-01-10", "workplace":"東京都本社", "job": "事務管理業務", "address":"", "data":"http://apidemo.eformsign.io/data/田中太郎.params"},
+{ "name": "玉置浩二", "email":"forjiro646@gmail.com", "mobile":"01074660866", "from":"2023-02-12", "to":"2024-01-11", "workplace":"東京都本社", "job": "事務管理業務", "address":"", "data":"http://apidemo.eformsign.io/data/玉置浩二.params"},
+{ "name": "新妻聖子", "email":"forjiro646@gmail.com", "mobile":"01074660866", "from":"2023-03-13", "to":"2024-01-12", "workplace":"東京都本社", "job": "営業職務", "address":"", "data":"http://apidemo.eformsign.io/data/新妻聖子.params"},
+{ "name": "島津亜矢", "email":"forjiro646@gmail.com", "mobile":"01074660866", "from":"2023-04-14", "to":"2024-01-13", "workplace":"東京都本社", "job": "営業職務", "address":"", "data":"http://apidemo.eformsign.io/data/島津亜矢.params"},
+{ "name": "宇多田ヒカル", "email":"forjiro646@gmail.com", "mobile":"01074660866", "from":"2023-05-15", "to":"2024-01-14", "workplace":"東京都本社", "job": "営業職務", "address":"", "data":"http://apidemo.eformsign.io/data/宇多田ヒカル.params"}
+]}

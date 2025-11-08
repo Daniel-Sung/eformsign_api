@@ -1,0 +1,5 @@
+﻿{"recipients": [
+{ "name": "홍길동1", "email":"kjm6595@naver.com", "mobile":"01063696595", "data":"http://apidemo.eformsign.io/data/employee_홍길동1.fields"},
+{ "name": "홍길동2", "email":"kjm6595@naver.com", "mobile":"01063696595", "data":"http://apidemo.eformsign.io/data/employee_홍길동2.fields"},
+{ "name": "홍길동3", "email":"kjm6595@naver.com", "mobile":"01063696595", "data":"http://apidemo.eformsign.io/data/employee_홍길동3.fields"}
+]}

@@ -1,0 +1,5 @@
+﻿{"recipients": [
+{ "name": "김다민", "email":"manypeople@forcs.com", "mobile":"01039230422", "data":"http://apidemo.eformsign.io/data/david4260.fields"},
+{ "name": "양정훈", "email":"yangjh89@kospo.co.kr", "mobile":"",  "data":"http://apidemo.eformsign.io/data/david4260.fields"},
+{ "name": "홍길동", "email":"dudwhd96@naver.com", "mobile":"01067984260",  "data":"http://apidemo.eformsign.io/data/david4260.fields"}
+]}

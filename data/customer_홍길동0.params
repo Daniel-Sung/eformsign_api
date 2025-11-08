@@ -1,0 +1,60 @@
+{
+  "fields": {
+    "COMPANY_CD": "",
+    "rentList": [
+      {
+        "APPLY_AREA": "",
+        "RENT_DT": "",
+        "DISCOUNT_PER": "",
+        "SCHARGE_PER": "",
+        "RENT_TOTAL_AMT": "",
+        "EXH_TOTAL_SUM": "",
+        "RENT_CNT": "",
+        "OVER_TIME": "",
+        "INFAC_NM": "",
+        "APPLY_PER": "",
+        "OVER_AMT": ""
+      }
+    ],
+    "TEL_NO": "",
+    "OWNER_NM": "백사장",
+    "STAFF_NM": "김대리",
+    "RENTAL_AMT": "",
+    "salesList": [
+      {
+        "DT_PAY_EXP": "",
+        "SALES_TYPE_PER": "",
+        "VAT": "",
+        "PAY_GB": "",
+        "SALES_TYPE_AMT": "",
+        "REMARK": "",
+        "PAY_AMT": ""
+      }
+    ],
+    "LESSEE_OWNER_NM": "",
+    "DEPOSIT_AMT": "",
+    "LESSEE_ADDR": "",
+    "DEPOSIT_PER": "",
+    "TOTAL_CONT_AMT": "",
+    "POST_ADDR_ACC_HOLDER": "인천광역시 연수구 갯벌로 12, 16층 인천관광공사",
+    "LESSEE_NM": "",
+    "totalContAmount": [
+      {
+        "PAY_GB": "전시장 임대료",
+        "TYPE_AMT": "",
+        "VAT_AMT": "",
+        "PAY_AMT": ""
+      },
+      {
+        "PAY_GB": "관리비 예치금",
+        "TYPE_AMT": "",
+        "VAT_AMT": "",
+        "PAY_AMT": ""
+      }
+    ],
+    "LESSEE_MNG_NM": "",
+    "CONT_DT": "",
+    "EVENT_NM": "",
+    "PAY_AMT": ""
+  }
+}

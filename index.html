@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+<link href="/view/style.css" rel="stylesheet" type="text/css" />
+<script src="https://kit.fontawesome.com/d9ef70aab0.js" crossorigin="anonymous"></script>
+<script src="/js/resource.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body class="bg">
+    <center style="margin-top:-15%;">
+    <form action="/view/login.jsp" style="border: 0px; padding-top:20%;">
+        <img src="/image/greenbiz_trans.png" style="width:120px; margin-bottom:10px;" alt=""><br>
+		<!-- <img src="/image/xronos.png" style="width:120px; margin-bottom:10px;" alt=""><br> -->
+        <span id="sysname" style="font-size: 24px; font-weight: bold;" data-text="SYSNAME"></span><br><br>
+        <input type="hidden" id="language" name="language" value="en">
+        <input type="text" id="loginId" name="loginId" data-holder="LOGINID" placeholder="" style="font-weight:bold; text-align:center; width: 208px; margin-bottom:10px; padding:9px 20px; border: 1px solid #ccc; border-radius: 2px;" required><br>
+        <input type="password" id="passwd" name="passwd" data-holder="PASSWORD" placeholder="" value="" style="font-weight:bold; text-align:center; width: 208px; margin-bottom:10px; padding:9px 20px; border: 1px solid #ccc; border-radius: 2px;" required><br>
+        <button type="submit" onClick="login()" data-text="LOGIN" style="font-weight:bold; width: 208px; padding:9px 20px; background-color: #04AA6D; border: none; color : white; border-radius: 2px;"></button><br>
+        <span id="message" class="message" style="color:red;"></span><br>
+        <select id="lang" class="custom-select" style="width:100px; margin-top:20px; background-color: #D9EEE1; color:black" onchange="changeLanguage()" >
+          <option id="en" class="select-items" value="en">ENGLISH</option>
+          <option id="ja" class="select-items" value="ja">日本語</option>
+          <option id="ko" class="select-items" value="ko">한국어</option>
+        </select><br><br>
+        <img src="/image/eformsign_symbol.png" style="width:20px;" alt="">
+        <span data-text="POWERED_BY_EFORMSIGNAPI" style="font-size: 14px;"></span>
+        <a href="", id="linkIntro" target="_blank"><i class="fa-solid fa-circle-question fa-1x" style="color:#5DADE2;"></i><span class="text nav-text"></span></a><br>
+        <span style="font-size: 13px;" data-text="WORKING_HOUR"></span><br><br>
+        <p>
+          <a href="http://apidemo.eformsign.io/view/esports.html"><img src="/image/kartrider-trans.png" style="width:200px;"><br><b>e-Sport Competition 2023</b></a>
+        </p>
+    </form>
+  </center>
+  </div>
+</body>
+<script language="JavaScript">
+
+const loginIdInput = document.getElementById('loginId'),
+	    passwdInput = document.getElementById('passwd');
+
+const query = window.location.search;
+const param = new URLSearchParams(query);
+localStorage.clear();
+localStorage.setItem('lang','ja');
+setlanguage();
+
+if( param.get('language')){
+  localStorage.setItem('lang',param.get('language'));
+  setlanguage();
+}
+
+document.getElementById("message").innerHTML = " ";
+if( param.get('memberId') == 'none'){
+  document.getElementById("message").innerHTML = resource[localStorage.lang].INVALID_MEMBER;
+}
+
+function changeLanguage () {
+  localStorage.setItem('lang',document.getElementById('lang').value);
+  setlanguage();
+}
+
+function setlanguage() {
+  let linkIntro;
+  let o = document.getElementById('linkIntro');
+
+  if(localStorage.getItem('lang')==null) {
+    const lang = navigator.language.toLowerCase().substr(0,2);
+    localStorage.setItem('lang',lang);
+  } 
+  document.getElementById(localStorage.lang).selected = true;
+  setLang();
+  switch (localStorage.lang) {
+    case 'ko': 
+      linkIntro = 'https://eformsign.gitbook.io/eformsign-integration-ko/'; 
+      document.getElementById("sysname").style.fontSize = '22px';
+      break;
+    case 'ja': 
+      linkIntro = 'https://eformsign.gitbook.io/eformsign-integration-ja/';
+      document.getElementById("sysname").style.fontSize = '22px';
+      break;
+    default:
+      linkIntro = 'https://eformsign.gitbook.io/eformsign-integration-en/';
+      document.getElementById("sysname").style.fontSize = '20px';
+      break;
+  }
+  o.setAttribute('href', linkIntro);
+  document.getElementById("message").value = '';
+}
+
+function login() {
+  if (loginIdInput.value !== "") {
+    localStorage.setItem('loginId',loginIdInput.value);
+  }
+  document.getElementById('language').value = localStorage.lang;
+  console.log(document.getElementById('language').value);
+}
+
+function esports(n) {
+    const url = (n == 1) ? "http://www.eformsign.com/?s=3L1YIi" : "http://apidemo.eformsign.io/view/katrider.html";
+    window.open(url);
+  }
+
+</script>
+</html>
